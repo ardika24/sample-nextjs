@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import apiFetch from "../../../utils/apiFetch";
 
 export const authOptions = {
   pages: {
@@ -13,7 +14,7 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const authResponse = await fetch("http://localhost:4000/auth/login", {
+        const authResponse = await apiFetch("/auth/login", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -21,7 +22,7 @@ export const authOptions = {
         const authData = await authResponse.json();
         if (!authResponse.ok || !authData) return null;
 
-        const userResponse = await fetch("http://localhost:4000/auth/whoami", {
+        const userResponse = await apiFetch("/auth/whoami", {
           headers: {
             Authorization: authData.accessToken,
           },

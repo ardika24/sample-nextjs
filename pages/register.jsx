@@ -2,6 +2,7 @@ import { useState } from "react";
 import Head from "next/head";
 import { Container, Form, Button } from "react-bootstrap";
 import { signIn } from "next-auth/react";
+import apiFetch from "../utils/apiFetch";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -15,7 +16,7 @@ export default function Register() {
 
     setLoading(true);
 
-    const response = await fetch("http://localhost:4000/auth/register", {
+    const response = await apiFetch("/auth/register", {
       method: "POST",
       body: JSON.stringify({
         username,
